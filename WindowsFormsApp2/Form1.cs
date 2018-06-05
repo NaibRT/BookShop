@@ -12,7 +12,7 @@ namespace WindowsFormsApp2
 {
     public partial class Form1 : Form
     {
-        static List<Book> kitabs = new List<Book>();
+        static List<Book> Books = new List<Book>();
         static List<Author> Authors = new List<Author>();
         static List<Publisher> Publishers = new List<Publisher>();
         public Form1()
@@ -28,7 +28,10 @@ namespace WindowsFormsApp2
             {
                 comboBox5.Items.Add(c);
             }
-            
+            foreach (Category c in Enum.GetValues(typeof(Category)))
+            {
+                comboBox3.Items.Add(c);
+            }
 
         }
 
@@ -57,6 +60,10 @@ namespace WindowsFormsApp2
             {
                 comboBox2.Items.Add(c.Name);
             }
+            textBox19.Text = "";
+            textBox20.Text = "";
+            textBox21.Text = "";
+            textBox22.Text = "";
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -72,18 +79,41 @@ namespace WindowsFormsApp2
             {
                 comboBox1.Items.Add(c.Name);
             }
+            textBox8.Text = "";
+            textBox13.Text = "";
+            textBox14.Text = "";
+            textBox15.Text = "";
+            textBox17.Text = "";
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Book book = new Book();
             book.Name = textBox1.Text;
-            book.PublishDate =Convert.ToDateTime( textBox4.Text);
+            book.Author = comboBox1.SelectedItem.ToString();
+            book.Publisher = comboBox2.SelectedItem.ToString();
+            book.PublishDate =DateTime.Parse(textBox4.Text);
+            book.Category = comboBox3.SelectedItem.ToString();
+            book.Lang = comboBox4.SelectedItem.ToString();
             book.Price =Convert.ToDecimal( textBox7.Text);
             book.PaperCount = Convert.ToInt32(textBox12.Text);
-            book.Stock = Convert.ToUInt32(textBox11.Text);
+            book.Stock = Convert.ToUInt32(textBox10.Text);
+            book.Conditions = comboBox5.SelectedItem.ToString();
             book.Edition = Convert.ToByte(textBox2.Text);
+            Books.Add(book);
+            textBox1.Text = "";
+            textBox4.Text = "";
+            textBox7.Text = "";
+            textBox12.Text = "";
+            textBox10.Text = "";
+            textBox2.Text = "";
+            foreach (var item in Books)
+            {
+                richTextBox1.Text += item.Name;
+            }
         }
+
+       
     }
     enum Language { En, Az, Ru, Tr,Fr};
     enum Condition { New, Used };
@@ -91,14 +121,16 @@ namespace WindowsFormsApp2
     class Book
     {
         public string Name;
+        public string Author;
+        public string Publisher;
         public DateTime PublishDate;
         //public string[] Category = new string[] { "Nesr", "Nezm" };
-        public Category Categorys;
-        public Language Lang;
+        public string Category;
+        public string Lang;
         public decimal Price;
         public int PaperCount;
         public uint Stock;
-        public Condition Conditions;
+        public string Conditions;
         public byte Edition;
         //public Book(string _name,Author _author,Publisher _publisher,DateTime _publishdate,Language _Lang,float _price,int _papercount,uint _stock,Condition _condition,byte _edition )
         //{
